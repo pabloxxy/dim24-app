@@ -39,12 +39,12 @@ function redrawFractal() {
   }
 }
 
-function drawTSquareFractal(x, y, len, iter) {
+function drawTSquareFractal(x, y, len, iter, wai) {
   if (iter === 0) {
     //noFill();
     stroke(0);
     fill(0);
-    rect(x+len/2,y+len/2,len,len);
+    rect(x+len*proportionSlider.value(),y+len*proportionSlider.value(),len,len);
   } 
   else {
     if (iter ===1) {
