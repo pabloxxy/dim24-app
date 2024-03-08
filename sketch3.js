@@ -1,4 +1,4 @@
-let length, proportion, maxlevel;
+let length, proportion, maxlevel, colorPicker;
 
 function setup() {
   createCanvas(800, 800);
@@ -18,11 +18,14 @@ function setup() {
 //  pq.position(20, 85);
   lengthSlider = createSlider(width/18, width/2, width/10, width/18);
 //  lengthSlider.position(20, 120);
+  let texto_color=createP("Color del fondo")
+  colorPicker = createColorPicker("red");
   translate(width/2,height/2);
   drawFractal();
   iterationsSlider.changed(drawFractal);
   proportionSlider.changed(drawFractal);
   lengthSlider.changed(drawFractal);
+  colorPicker.changed(drawFractal);
 }
 
 function drawFractal(){
@@ -30,7 +33,7 @@ function drawFractal(){
   proportion = proportionSlider.value();
   length = lengthSlider.value();
   h = length/2;
-  background(220);
+  background(colorPicker.color());
   f_1 = funciones(createVector(h,-h));
   g_1 = funciones(createVector(h,h));
   f_2 = funciones(createVector(-h,h));
