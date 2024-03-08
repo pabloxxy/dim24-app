@@ -75,6 +75,7 @@ function drawOrbit(transformaciones, p){
   function traverseForward(p, index, level){
     if(uploadedImage){
       image(uploadedImage, p.x, p.y, length*(proportion**(level)), length*(proportion**(level)));
+
     } else {
     square(p.x,p.y,length*(proportion**(level)));
     }
@@ -107,6 +108,8 @@ function uploadImage() {
     reader.onload = function(event) {
       uploadedImage = loadImage(event.target.result, function(img) {
         console.log("Ya se subió");
+        drawFractal(); 
+        //para que se actualice el fractal justo después de subir la foto
       });
     };
     reader.readAsDataURL(file);
