@@ -1,4 +1,4 @@
-let length, proportion, maxlevel, colorPicker;
+let length, proportion, maxlevel, colorPicker, uploadedImage;
 
 function setup() {
   createCanvas(800, 800);
@@ -73,7 +73,13 @@ function drawOrbit(transformaciones, p){
   indexesNotInverse = createIndexesNotInverse();
 
   function traverseForward(p, index, level){
+    if(uploadedImage){
+      image(uploadedImage, p.x, p.y, length*(proportion**(level)), length*(proportion**(level)));
+
+    } else {
     square(p.x,p.y,length*(proportion**(level)));
+    }
+    
     if (level >= maxlevel){
       return;
     }
@@ -82,8 +88,33 @@ function drawOrbit(transformaciones, p){
       traverseForward(transformaciones[indices[i]](p), indices[i], level+1);
     }
   }
-  square(p.x,p.y,length);
+  if(uploadedImage){
+    image(uploadedImage, p.x, p.y, length, length);
+  } else{
+    square(p.x,p.y,length);
+  }
+  
   for(let i = 0;i<4;i++){
     traverseForward(transformaciones[i](p),i,1);
   }
 }
+
+function uploadImage() {
+  const fileInput = document.getElementById('imageUpload');
+  const file = fileInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      uploadedImage = loadImage(event.target.result, function(img) {
+        console.log("Ya se subió");
+        drawFractal(); 
+        //para que se actualice el fractal justo después de subir la foto
+      });
+    };
+    reader.readAsDataURL(file);
+  } else {
+    console.error("No hay foto");
+  }
+}
+
