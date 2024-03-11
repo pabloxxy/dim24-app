@@ -1,7 +1,7 @@
 
 let fractalDiv;
 let divWidth, divHeight
-let length, proportion, maxlevel, colorPicker, uploadedImage;
+let length, proportion, maxlevel, colorPicker, uploadedImage, logo_im, logo_unam;
 
 function setup() {
   //  Contenedor
@@ -13,11 +13,9 @@ function setup() {
   divHeight = fractalDiv.size().height;
 
   //let canvas = createCanvas(250,250);
-  let canvas = createCanvas(divWidth, 250);
+  let canvas = createCanvas(divWidth, windowHeight/2);
   canvas.parent(fractalDiv); // colocar canvas en contenedor
   //canvas.elt.classList.add("fractalSkin"); // Agregar canvas a clase de css
-
-
 
   // Crear sliders y asignar valores iniciales
   let text1 = createP('iteraciones');
@@ -40,7 +38,7 @@ function setup() {
   let text3 = createP('longitud');
   text3.parent("slider");
   //  pq.position(20, 85);
-  lengthSlider = createSlider(divWidth / 18, divWidth / 2, divWidth / 10, divWidth / 18);
+  lengthSlider = createSlider(divWidth / 10, divWidth / 2, divWidth / 5, 0);
   //lengthSlider = createSlider(width / 18, width / 2, width / 10, width / 18);
   lengthSlider.parent("slider");
   lengthSlider.class("sliderSkin");
@@ -51,6 +49,11 @@ function setup() {
   colorPicker = createColorPicker(color(173, 216, 230));
   colorPicker.parent("slider");
   colorPicker.class("sliderSkin");
+  let cuadro_color = createP("Color del fractal");
+  cuadro_color.parent("slider");
+  colorPickerCuadro = createColorPicker(color(random(0,255),random(0,255),random(0,255)));
+  colorPickerCuadro.parent("slider");
+  colorPickerCuadro.class("sliderSkin");
 
 
   iterationsSlider.changed(drawFractal);
@@ -60,13 +63,16 @@ function setup() {
   // Evento para cambiar el colorPicker
   colorPicker.input(changeBackgroundColor);
 }
+
+
 function draw() {
   clear()
   translate(width / 2, height / 2);
   //translate(divWidth / 2,height/2);
   //translate(canvas.width / 2,canvas.height/2);
-
   drawFractal();
+  image(logo_im, -canvas.width/2+5, -canvas.height/2 , canvas.width/12, canvas.width/12);
+  image(logo_unam, -canvas.width/2 +10, -canvas.height/2, canvas.width/13, canvas.width/13);
 }
 
 function drawFractal() {
@@ -97,7 +103,7 @@ function createIndexesNotInverse() {
     let a = [];
     let b = [];
     for (let j = kinv + 1; j < 4; j++) {
-      append(a, j);
+      append(a, j);250
     }
     for (let j = 0; j <= kinv - 1; j++) {
       append(b, j);
@@ -107,11 +113,20 @@ function createIndexesNotInverse() {
   }
   return inotinverse;
 }
+
+
 function drawOrbit(transformaciones, p){
   indexesNotInverse = createIndexesNotInverse();
 
   function traverseForward(p, index, level){
+    if(uploadedImage){
+      image(uploadedImage, p.x, p.y, length*(proportion**(level)), length*(proportion**(level)));
+
+    } else {
+    fill(colorPickerCuadro.value());
     square(p.x,p.y,length*(proportion**(level)));
+    }
+
     if (level >= maxlevel){
       return;
     }
@@ -120,21 +135,54 @@ function drawOrbit(transformaciones, p){
       traverseForward(transformaciones[indices[i]](p), indices[i], level+1);
     }
   }
-  square(p.x,p.y,length);
+  if(uploadedImage){
+    image(uploadedImage, p.x, p.y, length, length);
+  } else{
+    fill(colorPickerCuadro.value())
+    square(p.x,p.y,length);
+  }
+
   for(let i = 0;i<4;i++){
     traverseForward(transformaciones[i](p),i,1);
   }
 }
+
+
+function preload(){
+  logo_im = loadImage("im.png");
+  logo_unam = loadImage("unam.png");
+}
+
   function windowResized() {
     // Actualiza el tamaño del lienzo cuando se cambia el tamaño de la ventana
     divWidth = fractalDiv.size().width;
-    resizeCanvas(divWidth, 250);
+    resizeCanvas(divWidth, windowHeight/2);
   }
   //  Cambiar color background
   function changeBackgroundColor() {
     // Obtener el color seleccionado por el color picker
     let selectedColor = colorPicker.color();
-
+    logo_im = loadImage("im.png")
     // Aplicar el color como fondo del contenedor fractalDiv
     fractalDiv.style("background-color", selectedColor.toString());
+  }
+
+
+  function uploadImage() {
+    const fileInput = document.getElementById('imageUpload');
+    const file = fileInput.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        uploadedImage = loadImage(event.target.result, function(img) {
+          console.log("Ya se subió");
+          drawFractal();
+          //para que se actualice el fractal justo después de subir la foto
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      console.error("No hay foto");
+    }
   }
