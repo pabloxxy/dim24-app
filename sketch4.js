@@ -35,7 +35,7 @@ function setup() {
   proportionSlider.class("sliderSkin");
   //  proportionSlider.position(20, 80);
 
-  let text3 = createP('longitud');
+  let text3 = createP('zoom');
   text3.parent("slider");
   //  pq.position(20, 85);
   lengthSlider = createSlider(divWidth / 10, divWidth / 2, divWidth / 5, 0);
@@ -149,8 +149,8 @@ function drawOrbit(transformaciones, p){
 
 
 function preload(){
-  logo_im = loadImage("im.png");
-  logo_unam = loadImage("unam.png");
+  logo_im = loadImage("imgs/im.png");
+  logo_unam = loadImage("imgs/unam.png");
 }
 
   function windowResized() {
@@ -162,7 +162,6 @@ function preload(){
   function changeBackgroundColor() {
     // Obtener el color seleccionado por el color picker
     let selectedColor = colorPicker.color();
-    logo_im = loadImage("im.png")
     // Aplicar el color como fondo del contenedor fractalDiv
     fractalDiv.style("background-color", selectedColor.toString());
   }
