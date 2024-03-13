@@ -1,7 +1,7 @@
 
 let fractalDiv;
 let divWidth, divHeight
-let length, proportion, maxlevel, colorPicker, uploadedImage, logo_im, logo_unam;
+let length, proportion, maxlevel, colorPicker, uploadedImage, logo_im, logo_unam, marco;
 let canvas;
 
 function setup() {
@@ -14,7 +14,7 @@ function setup() {
   divHeight = fractalDiv.size().height;
 
   //Creacion canvas
-  canvas = createCanvas(divWidth, windowHeight / 2);
+  canvas = createCanvas(divWidth, windowHeight / 1.4);
   // colocar canvas en contenedor
   canvas.parent(fractalDiv);
 
@@ -143,11 +143,12 @@ function drawOrbit(transformaciones, p) {
 function preload() {
   //logo_im = loadImage("imgs/im.png");
   //logo_unam = loadImage("imgs/unam.png");
+  marco = loadImage("marco.png");
 }
 function windowResized() {
   // Actualiza el tamaño del lienzo cuando se cambia el tamaño de la ventana
   divWidth = fractalDiv.size().width;
-  resizeCanvas(divWidth, windowHeight / 2);
+  resizeCanvas(divWidth, windowHeight / 1.4);
 }
 //  Cambiar color background
 function changeBackgroundColor() {
