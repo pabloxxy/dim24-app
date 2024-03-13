@@ -24,7 +24,7 @@ function setup() {
   iterationsSlider = createSlider(1, 6, 3, 1);
   iterationsSlider.parent("slider");
   iterationsSlider.class("sliderSkin");
-  //Slider Proporcion 
+  //Slider Proporcion
   let text2 = createP('Proporción');
   text2.parent("slider");
   proportionSlider = createSlider(0.2, 0.8, 0.4, 0.01);
@@ -143,7 +143,7 @@ function drawOrbit(transformaciones, p) {
 function preload() {
   //logo_im = loadImage("imgs/im.png");
   //logo_unam = loadImage("imgs/unam.png");
-  marco = loadImage("marco.png");
+  //marco = loadImage("marco.png");
 }
 function windowResized() {
   // Actualiza el tamaño del lienzo cuando se cambia el tamaño de la ventana
@@ -191,7 +191,7 @@ function descargarImagen() {
 
   //        Aqui se podra agregar un marco.       //
 
-  
+
   //Recorte del canvas
   imagenDescargar.image(canvas.get(x, y, w, h), 0, 0);
   //Descarga del  nuevo canvas
